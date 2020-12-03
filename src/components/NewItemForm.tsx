@@ -10,8 +10,8 @@ export function NewItemForm({ onAdd }: NewItemFormProps) {
   const [text, setText] = useState<string>("");
   const inputRef = useFocus();
 
-  const handleAddText = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.key) onAdd(text);
+  function handleAddText (e: React.KeyboardEvent<HTMLInputElement>) {
+    if(e.key === "Enter") onAdd(text);
   }
 
   return (
