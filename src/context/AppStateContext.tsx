@@ -1,52 +1,37 @@
-import React, { createContext } from "react";
-
-interface Task {
-  id: string;
-  text: string;
-}
-
-interface List {
-  id: string;
-  text: string;
-  tasks: Task[];
-}
-
-export interface AppState {
-  list: List[];
-}
-
-interface AppStateContextProps {
-  state: AppState;
-}
+import { createContext, PropsWithChildren, useContext, useReducer } from 'react';
+import { AppState, AppStateContextProps } from './AppStateContext.types';
+import AppStateReducer from './AppStateReducer';
 
 const appData: AppState = {
   list: [
     {
-      id: "0",
-      text: "TO DO",
-      tasks: [{ id: "c0", text: "Generate app scaffold" }],
+      id: '0',
+      text: 'TO DO',
+      tasks: [{ id: 'c0', text: 'Generate app scaffold' }],
     },
     {
-      id: "1",
-      text: "In Progress",
-      tasks: [{ id: "c2", text: "Learn TypeScript" }],
+      id: '1',
+      text: 'In Progress',
+      tasks: [{ id: 'c2', text: 'Learn TypeScript' }],
     },
     {
-      id: "2",
-      text: "Done",
-      tasks: [{ id: "c3", text: "Begin to use static typing" }],
+      id: '2',
+      text: 'Done',
+      tasks: [{ id: 'c3', text: 'Begin to use static typing' }],
     },
   ],
 };
 
-const AppStateContext = createContext<AppStateContextProps>(
-  {} as AppStateContextProps
-);
+const AppStateContext = createContext<AppStateContextProps>({} as AppStateContextProps);
 
-export const AppStateProvider = ({children}: React.PropsWithChildren<{}>) => {
-    return (
-        <AppStateContext.Provider value={{state: appData}}>
-            {children}
-        </AppStateContext.Provider>
-    )
-}
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const AppStateProvider = ({ children }: PropsWithChildren<{}>): JSX.Element => {
+  const [state, dispatch] = useReducer(AppStateReducer, appData);
+  return (
+    <AppStateContext.Provider value={{ state, dispatch }}>{children}</AppStateContext.Provider>
+  );
+};
+
+export const useAppState = (): AppStateContextProps => {
+  return useContext(AppStateContext);
+};
