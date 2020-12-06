@@ -1,3 +1,5 @@
+import { DragItem } from 'types/DragItem';
+
 export interface Task {
   id: string;
   text: string;
@@ -10,7 +12,8 @@ export interface List {
 }
 
 export interface AppState {
-  list: List[];
+  lists: List[];
+  draggedItem: DragItem | undefined;
 }
 
 export interface AppStateContextProps {
@@ -20,4 +23,15 @@ export interface AppStateContextProps {
 
 export type Action =
   | { type: 'ADD_LIST'; payload: string }
-  | { type: 'ADD_TASK'; paylload: { text: string; listId: string } };
+  | { type: 'ADD_TASK'; paylload: { text: string; listId: string } }
+  | {
+      type: 'MOVE_LIST';
+      payload: {
+        dragIndex: number;
+        hoverIndex: number;
+      };
+    }
+  | {
+      type: 'SET_DRAGGE_ITEM';
+      payload: DragItem | undefined;
+    };

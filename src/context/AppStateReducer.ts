@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { findItemIndexById, overrideItemAtIndex } from '../utils/arrayUtils';
+import { findItemIndexById, moveItem, overrideItemAtIndex } from 'utils/arrayUtils';
 import { Action, AppState } from './AppStateContext.types';
 
 const AppStateReducer = (state: AppState, action: Action): AppState => {
@@ -7,13 +7,13 @@ const AppStateReducer = (state: AppState, action: Action): AppState => {
     case 'ADD_LIST': {
       return {
         ...state,
-        list: [...state.list, { id: nanoid(), text: action.payload, tasks: [] }],
+        lists: [...state.lists, { id: nanoid(), text: action.payload, tasks: [] }],
       };
     }
     case 'ADD_TASK': {
-      const targetListIndex = findItemIndexById(state.list, action.paylload.listId);
+      const targetListIndex = findItemIndexById(state.lists, action.paylload.listId);
 
-      const targetItem = state.list[targetListIndex];
+      const targetItem = state.lists[targetListIndex];
 
       const updatedTargetListItem = {
         ...targetItem,
@@ -21,8 +21,18 @@ const AppStateReducer = (state: AppState, action: Action): AppState => {
       };
       return {
         ...state,
-        list: overrideItemAtIndex(state.list, updatedTargetListItem, targetListIndex),
+        lists: overrideItemAtIndex(state.lists, updatedTargetListItem, targetListIndex),
       };
+    }
+    case 'MOVE_LIST': {
+      const { dragIndex, hoverIndex } = action.payload;
+      return {
+        ...state,
+        lists: moveItem(state.lists, dragIndex, hoverIndex),
+      };
+    }
+    case 'SET_DRAGGE_ITEM': {
+      return { ...state, draggedItem: action.payload };
     }
     default: {
       return state;

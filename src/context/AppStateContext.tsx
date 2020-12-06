@@ -3,7 +3,7 @@ import { AppState, AppStateContextProps } from './AppStateContext.types';
 import AppStateReducer from './AppStateReducer';
 
 const appData: AppState = {
-  list: [
+  lists: [
     {
       id: '0',
       text: 'TO DO',
@@ -20,6 +20,7 @@ const appData: AppState = {
       tasks: [{ id: 'c3', text: 'Begin to use static typing' }],
     },
   ],
+  draggedItem: undefined,
 };
 
 const AppStateContext = createContext<AppStateContextProps>({} as AppStateContextProps);
