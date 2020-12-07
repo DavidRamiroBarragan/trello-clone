@@ -27,12 +27,7 @@ module.exports = {
     'jsx-a11y/href-no-hash': ['off'],
     'react/jsx-props-no-spreading': ['off'],
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'error'],
-      },
-    ],
+    'no-console': 1,
     'react/require-default-props': [
       0,
       { forbidDefaultForRequired: true, ignoreFunctionalComponents: true },
@@ -76,6 +71,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'additional-typescript-only-rule': 0,
     'no-undef': 0,
+    'no-debugger': ['warn'],
   },
   settings: {
     version: 'detect',
