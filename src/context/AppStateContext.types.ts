@@ -34,4 +34,13 @@ export type Action =
   | {
       type: 'SET_DRAGGE_ITEM';
       payload: DragItem | undefined;
+    }
+  | {
+      type: 'MOVE_TASK';
+      payload: {
+        dragIndex: number;
+        hoverIndex: number;
+        sourceColumn: string;
+        targetColumn: string;
+      };
     };
