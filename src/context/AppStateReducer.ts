@@ -1,5 +1,11 @@
 import { nanoid } from 'nanoid';
-import { findItemIndexById, moveItem, overrideItemAtIndex } from 'utils/arrayUtils';
+import {
+  findItemIndexById,
+  insertItemAtIndex,
+  moveItem,
+  overrideItemAtIndex,
+  removeItemAtIndex,
+} from 'utils/arrayUtils';
 import { Action, AppState } from './AppStateContext.types';
 
 const AppStateReducer = (state: AppState, action: Action): AppState => {
@@ -33,6 +39,44 @@ const AppStateReducer = (state: AppState, action: Action): AppState => {
     }
     case 'SET_DRAGGE_ITEM': {
       return { ...state, draggedItem: action.payload };
+    }
+    case 'MOVE_TASK': {
+      const { dragIndex, hoverIndex, sourceColumn, targetColumn } = action.payload;
+      /* Get the source and the traget list index to move the task*/
+      const sourceListIndex = findItemIndexById(state.lists, sourceColumn);
+      const targetListIndex = findItemIndexById(state.lists, targetColumn);
+      /*List from I take the task */
+      const sourceList = state.lists[sourceListIndex];
+      /* Task to move */
+      const task = sourceList.tasks[dragIndex];
+      /* Source list updated */
+      const updateSourceList = {
+        ...sourceList,
+        tasks: removeItemAtIndex(sourceList.tasks, dragIndex),
+      };
+
+      /* New state updated */
+      const stateWithUpdatedSourceList = {
+        ...state,
+        lists: overrideItemAtIndex(state.lists, updateSourceList, sourceListIndex),
+      };
+
+      /**list where we add the drag task */
+      const targetList = stateWithUpdatedSourceList.lists[targetListIndex];
+
+      const updatedTargetList = {
+        ...targetList,
+        tasks: insertItemAtIndex(targetList.tasks, task, hoverIndex),
+      };
+
+      return {
+        ...stateWithUpdatedSourceList,
+        lists: overrideItemAtIndex(
+          stateWithUpdatedSourceList.lists,
+          updatedTargetList,
+          targetListIndex
+        ),
+      };
     }
     default: {
       return state;
