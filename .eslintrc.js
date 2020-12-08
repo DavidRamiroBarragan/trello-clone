@@ -24,6 +24,8 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'react-hooks', 'import'],
   rules: {
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'jsx-a11y/href-no-hash': ['off'],
     'react/jsx-props-no-spreading': ['off'],
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
@@ -71,7 +73,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'additional-typescript-only-rule': 0,
     'no-undef': 0,
-    'no-debugger': ['warn'],
+    'no-debugger': 1,
   },
   settings: {
     version: 'detect',

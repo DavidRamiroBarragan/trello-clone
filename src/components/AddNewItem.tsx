@@ -10,7 +10,6 @@ interface AddNewItemProps {
 
 export const AddNewItem = ({ onAdd, toggleButtonText, dark }: AddNewItemProps): JSX.Element => {
   const [showForm, setShowForm] = useState<boolean>(false);
-
   if (showForm) {
     return (
       <NewItemForm
